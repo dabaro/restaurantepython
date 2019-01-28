@@ -139,3 +139,11 @@ def modificarCliente(fila):
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+
+def altacamarero(nombre,contraseña):
+    try:
+        cur.execute("Insert into Camarero (Nombre,Contraseña) values ('"+nombre+"','"+contraseña+"')")
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()

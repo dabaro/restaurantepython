@@ -62,6 +62,20 @@ class Restaurante:
         self.listclientes = b.get_object("listclientes")
         self.treeclientes = b.get_object("treeclientes")
 
+        #Objetos pestaña productos
+        self.lblmesaservicio = b.get_object("lblmesaservicio")
+        self.lblproducto = b.get_object("lblproducto")
+        self.entproducto = b.get_object("entproducto")
+        self.btnañadirproducto = b.get_object("btnañadirproducto")
+
+
+        #Objetos ventana añadir productos
+        self.venproductos = b.get_object("venproductos")
+        self.entnombreproducto = b.get_object("entnombreproducto")
+        self.entprecio = b.get_object("entprecio")
+        self.btnprodvolver = b.get_object("btnprodvolver")
+        self.btnañadirprod = b.get_object("btnañadirprod")
+
 
         #Objetos ventana login camareros
         self.venlogin = b.get_object("venlogin")
@@ -121,13 +135,18 @@ class Restaurante:
                'on_menuabrirsesion_activate': self.abrirsesion,
                'on_menucerrarsesion_activate': self.cerrarsesion,
                'on_menuregistrarcamarero_activate': self.registrarcamarero,
-               'on_btnaceptar_clicked': self.hidevenavisoroot}
+               'on_btnaceptar_clicked': self.hidevenavisoroot,
+               'on_btnregvolver_clicked':self.hidevenregistrar,
+               'on_btnregistrar_clicked': self.btnregistrarcamarero }
 
         b.connect_signals(dic)
         self.venprincipal.show()
         self.venprincipal.fullscreen()
         self.venlogin.connect('delete-event', lambda w, e: w.hide() or True)
         self.venerror.connect('delete-event', lambda w, e: w.hide() or True)
+        self.venerror2.connect('delete-event', lambda w, e: w.hide() or True)
+        self.venregistrar.connect('delete-event', lambda w, e: w.hide() or True)
+        #self.venavisoroot.connect('delete-event', lambda w, e: w.hide() or True)
         datosprovincias.cargarcmbprov(self.listprovincias)
         datos.cargaImagenesMesas(self.listmesas, self.btnmesa1, self.btnmesa2, self.btnmesa3,
                                   self.btnmesa4,self.btnmesa5,self.btnmesa6,self.btnmesa7,self.btnmesa8,self.mesa1,
@@ -155,6 +174,9 @@ class Restaurante:
     def hidevenavisoroot(self, widget, data=None):
         self.venavisoroot.hide()
 
+    def hidevenregistrar(self, widget, data=None):
+        self.venregistrar.hide()
+
     def confirmarlogin(self, widget, data=None):
         nombre = self.entnombrecamarero.get_text()
         contraseña = self.entcontraseña.get_text()
@@ -181,6 +203,17 @@ class Restaurante:
             self.venregistrar.show()
         else :
             self.venerror.show()
+
+    def btnregistrarcamarero(self,widget,data=None):
+        nombre = self.entregnombrecamarero.get_text()
+        contraseña = self.entregcontraseña.get_text()
+        confcontraseña = self.entregconfirmarcontraseña.get_text()
+        print(nombre,contraseña)
+
+        if contraseña == confcontraseña:
+            datos.altacamarero(nombre,contraseña)
+            self.venregistrar.hide()
+
 
 
     def pulsarbtnmesa1(self,widget, data=None):
@@ -425,7 +458,7 @@ class Restaurante:
         indexlocalidad = self.cmblocalidad.get_active()
         modelolocalidad = self.cmblocalidad.get_model()
         nombrelocalidad = modelolocalidad[indexlocalidad][0]
-        print(nombrelocalidad)
+
 
         if dni != '' and apellidos != '' and nombre != '' and direccion != '' and nombreprovincia != '' and nombrelocalidad != '':
             listadatos = (dni, apellidos, nombre, direccion, nombreprovincia, nombrelocalidad)
