@@ -1,6 +1,10 @@
 import gi
 import datos
 import datosprovincias
+import locale
+
+locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
+
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -67,6 +71,10 @@ class Restaurante:
         self.lblproducto = b.get_object("lblproducto")
         self.entproducto = b.get_object("entproducto")
         self.btnañadirproducto = b.get_object("btnañadirproducto")
+        self.treeproductos = b.get_object("treeproductos")
+        self.listproductos = b.get_object("listproductos")
+        self.treemesas2 = b.get_object("treemesas2")
+        self.listmesas2 = b.get_object("listmesas2")
 
 
         #Objetos ventana añadir productos
@@ -98,7 +106,7 @@ class Restaurante:
         self.btnaceptarerrorlogin = b.get_object("btnaceptarerrorlogin")
 
         # Objetos ventana aviso registrar
-        self.venavisoroot = b.get_object("venvisoroot")
+        self.venavisoroot = b.get_object("venavisoroot")
         self.btnaceptar = b.get_object("btnaceptar")
 
         #Objetos ventana aviso ocuparmesa
@@ -137,7 +145,11 @@ class Restaurante:
                'on_menuregistrarcamarero_activate': self.registrarcamarero,
                'on_btnaceptar_clicked': self.hidevenavisoroot,
                'on_btnregvolver_clicked':self.hidevenregistrar,
-               'on_btnregistrar_clicked': self.btnregistrarcamarero }
+               'on_btnregistrar_clicked': self.btnregistrarcamarero,
+               'on_btnañadirproducto_clicked': self.showvenañadirproducto,
+               'on_btnprodvolver_clicked': self.hidevenañadirproductos,
+               'on_btnañadirprod_clicked':self.altaproducto,
+               'on_treeproductos_cursor_changed': self.recuperarproducto}
 
         b.connect_signals(dic)
         self.venprincipal.show()
@@ -146,13 +158,16 @@ class Restaurante:
         self.venerror.connect('delete-event', lambda w, e: w.hide() or True)
         self.venerror2.connect('delete-event', lambda w, e: w.hide() or True)
         self.venregistrar.connect('delete-event', lambda w, e: w.hide() or True)
-        #self.venavisoroot.connect('delete-event', lambda w, e: w.hide() or True)
+        self.venproductos.connect('delete-event', lambda w, e: w.hide() or True)
+        self.venavisoroot.connect('delete-event', lambda w, e: w.hide() or True)
         datosprovincias.cargarcmbprov(self.listprovincias)
         datos.cargaImagenesMesas(self.listmesas, self.btnmesa1, self.btnmesa2, self.btnmesa3,
                                   self.btnmesa4,self.btnmesa5,self.btnmesa6,self.btnmesa7,self.btnmesa8,self.mesa1,
                                   self.mesa2,self.mesa3,self.mesa4,self.mesa5,self.mesa6,self.mesa7,self.mesa8)
         datos.cargarMesas(self.listmesas, self.treemesas)
         datos.cargarClientes(self.listclientes, self.treeclientes)
+        datos.cargarproductos(self.listproductos,self.treeproductos)
+        datos.cargarMesas2(self.listmesas2,self.treemesas2)
 
 
 
@@ -202,17 +217,24 @@ class Restaurante:
         if usuario == 'root':
             self.venregistrar.show()
         else :
-            self.venerror.show()
+            self.venavisoroot.show()
 
     def btnregistrarcamarero(self,widget,data=None):
         nombre = self.entregnombrecamarero.get_text()
         contraseña = self.entregcontraseña.get_text()
         confcontraseña = self.entregconfirmarcontraseña.get_text()
-        print(nombre,contraseña)
+
 
         if contraseña == confcontraseña:
             datos.altacamarero(nombre,contraseña)
             self.venregistrar.hide()
+
+
+    def showvenañadirproducto(self,widget,data=None):
+        self.venproductos.show()
+
+    def hidevenañadirproductos(self,widget,data=None):
+        self.venproductos.hide()
 
 
 
@@ -312,7 +334,9 @@ class Restaurante:
                 datos.cambiarestadomesa(idmesa)
 
             datos.cargarMesas(self.listmesas,self.treemesas)
+            self.lblmesaservicio.set_text(mesa)
             self.limpiarmesas(widget)
+            datos.cargarMesas2(self.listmesas2,self.treemesas2)
         else :
             self.venerror2.show()
 
@@ -445,6 +469,7 @@ class Restaurante:
             idlocalidad = datosprovincias.recuperarlocalidad(localidad,idprovincia+1)
             self.cmblocalidad.set_active(idlocalidad)
 
+
     def modificarcliente(self,widget, data=None):
 
         dni = self.entdni.get_text().upper()
@@ -466,6 +491,24 @@ class Restaurante:
             datos.cargarClientes(self.listclientes, self.treeclientes)
             self.limpiarClientes(widget)
             self.cmblocalidad.set_button_sensitivity(False)
+
+
+    def altaproducto(self,widget, data=None):
+        nombre = self.entnombreproducto.get_text()
+        precio = str(round(float(self.entprecio.get_text()), 2))
+
+        datos.altaproducto(nombre,precio)
+        datos.cargarproductos(self.listproductos,self.treeproductos)
+        self.venproductos.hide()
+
+
+    def recuperarproducto(self,widget, data=None):
+        model, iter = self.treeproductos.get_selection().get_selected()
+
+
+        if iter != None:
+            nombreproducto = model.get_value(iter, 1)
+            self.lblproducto.set_text(nombreproducto)
 
 
 

@@ -34,6 +34,21 @@ def cargarMesas(listmesas,treemesas):
     except sqlite3.OperationalError as e:
         print(e)
 
+
+def cargarMesas2(listmesas2,treemesas2):
+    confirmacion = 'Si'
+    try:
+        listmesas2.clear()
+        cur.execute("select Idmesa, Maxcomensales from Mesa where Ocupada = '"+ confirmacion +"' ")
+        cursor=cur.fetchall()
+        for row in cursor:
+            listmesas2.append(row)
+            treemesas2.show()
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+
 #Método para cargar las mesas en el treeview
 def cargarMesasTree(treemesas,listmesas,fila):
     listmesas.append(fila)
@@ -140,6 +155,7 @@ def modificarCliente(fila):
         print(e)
         conex.rollback()
 
+
 def altacamarero(nombre,contraseña):
     try:
         cur.execute("Insert into Camarero (Nombre,Contraseña) values ('"+nombre+"','"+contraseña+"')")
@@ -147,3 +163,32 @@ def altacamarero(nombre,contraseña):
     except sqlite3.OperationalError as e:
         print(e)
         conex.rollback()
+
+
+def altaproducto(nombre,precio):
+    try:
+        cur.execute("Insert into Producto (Nombreproducto, Preciounidad) values ('"+nombre+"','"+precio+"')")
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+
+
+def cargarproductos(listproductos,treeproductos):
+    try:
+        listproductos.clear()
+        cur.execute("select * from Producto")
+        cursor=cur.fetchall()
+
+        i = 0
+        for row in cursor:
+            id = int(row[0])
+            nombre = row[1]
+            precio = str(row[2])
+            fila = (id, nombre, precio)
+            listproductos.append(fila)
+            treeproductos.show()
+            i = i + 1
+
+    except sqlite3.OperationalError as e:
+        print(e)
