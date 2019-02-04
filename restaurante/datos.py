@@ -67,6 +67,18 @@ def comprobarlogin(nombre,contraseña):
     except sqlite3.OperationalError as e:
         print(e)
 
+def comprobarcamarero(nombre):
+    try:
+
+        cur.execute("select Idcamarero from Camarero where Nombre=?",(nombre,))
+        cursor=cur.fetchall()
+
+        return cursor
+
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
 #Método para cambiar el estado de una mesa al pulsar ocupar mesa
 def cambiarestadomesa(idmesa):
     confirmación = 'Si'
@@ -192,3 +204,89 @@ def cargarproductos(listproductos,treeproductos):
 
     except sqlite3.OperationalError as e:
         print(e)
+
+def crearfactura(fila):
+    try:
+        cur.execute("Insert into Factura (Idcamarero,Idmesa,Fecha) values (?,?,?)",fila)
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+
+def cargarfacturasmesa(treefacturas,listfacturas,idmesa):
+    try:
+        listfacturas.clear()
+        cur.execute("select Idfactura, Idcamarero, Idmesa, Fecha, Pagada from Factura where Idmesa = '" + str(idmesa) + "'")
+        cursor=cur.fetchall()
+        for row in cursor:
+            listfacturas.append(row)
+            treefacturas.show()
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def buscarproducto(producto):
+    try:
+        cur.execute("select Idproducto from Producto where Nombreproducto = '" + producto + "'")
+        cursor=cur.fetchall()
+        print (cursor)
+        return cursor [0][0]
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def altalineaproducto(idfactura,idproducto,cantidad):
+    try:
+        cur.execute("Insert into Lineafactura (Idfactura,Idproducto,Cantidad) values ('"+str(idfactura)+"','"+str(idproducto)+"','"+str(cantidad)+"')")
+        conex.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+
+def comprobarcamarerofactura(camarero,idfactura):
+    try:
+        cur.execute("select Idcamarero from Camarero where Nombre=?", (camarero,))
+        cursor = cur.fetchall()
+
+        cur.execute("select Idcamarero from Factura where Idfactura=?", (idfactura,))
+        cursor2 = cur.fetchall()
+
+
+        if cursor == cursor2:
+            return True
+        else:
+            return False
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+
+def cargarfacturas(listfacturas2,treefacturas2):
+    try:
+        listfacturas2.clear()
+        cur.execute("select * from Factura")
+        cursor=cur.fetchall()
+        for row in cursor:
+            listfacturas2.append(row)
+            treefacturas2.show()
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def pagarfactura(idfactura,pagada):
+    try:
+        cur.execute("Update Factura set Pagada=? where Idfactura=? ", (pagada, idfactura,))
+        conex.commit()
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def buscarmesafactura(idfactura):
+    try:
+        cur.execute("select Idmesa from Factura where Idfactura = '" + idfactura + "'")
+        cursor=cur.fetchall()
+        return cursor [0][0]
+
+    except sqlite3.OperationalError as e:
+        print(e)
+

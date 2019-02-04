@@ -18,6 +18,52 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="listclientes2">
+    <columns>
+      <!-- column-name Dni -->
+      <column type="gchararray"/>
+      <!-- column-name Apellidos -->
+      <column type="gchararray"/>
+      <!-- column-name Nombre -->
+      <column type="gchararray"/>
+      <!-- column-name Direccion -->
+      <column type="gchararray"/>
+      <!-- column-name Provincia -->
+      <column type="gchararray"/>
+      <!-- column-name Localidad -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listfacturas">
+    <columns>
+      <!-- column-name idfactura -->
+      <column type="gint"/>
+      <!-- column-name idcamarero -->
+      <column type="gint"/>
+      <!-- column-name idmesa -->
+      <column type="gint"/>
+      <!-- column-name fecha -->
+      <column type="gchararray"/>
+      <!-- column-name pagada -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listfacturas2">
+    <columns>
+      <!-- column-name idfactura -->
+      <column type="gint"/>
+      <!-- column-name dni -->
+      <column type="gchararray"/>
+      <!-- column-name idcamarero -->
+      <column type="gint"/>
+      <!-- column-name idmesa -->
+      <column type="gint"/>
+      <!-- column-name fecha -->
+      <column type="gchararray"/>
+      <!-- column-name pagada -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="listlineaproducto"/>
   <object class="GtkListStore" id="listlocalidades">
     <columns>
@@ -529,6 +575,7 @@
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="vexpand">True</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkFixed">
@@ -647,6 +694,7 @@
                                 <property name="height_request">350</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="vexpand">True</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="treemesas">
@@ -1091,8 +1139,8 @@
                                 <property name="label" translatable="yes">Mesa a atender:</property>
                               </object>
                               <packing>
-                                <property name="x">8</property>
-                                <property name="y">18</property>
+                                <property name="x">19</property>
+                                <property name="y">83</property>
                               </packing>
                             </child>
                             <child>
@@ -1103,8 +1151,8 @@
                                 <property name="can_focus">False</property>
                               </object>
                               <packing>
-                                <property name="x">142</property>
-                                <property name="y">19</property>
+                                <property name="x">160</property>
+                                <property name="y">86</property>
                               </packing>
                             </child>
                             <child>
@@ -1116,7 +1164,8 @@
                                 <property name="label" translatable="yes">Producto a añadir:</property>
                               </object>
                               <packing>
-                                <property name="y">95</property>
+                                <property name="x">8</property>
+                                <property name="y">31</property>
                               </packing>
                             </child>
                             <child>
@@ -1127,8 +1176,8 @@
                                 <property name="can_focus">False</property>
                               </object>
                               <packing>
-                                <property name="x">150</property>
-                                <property name="y">95</property>
+                                <property name="x">152</property>
+                                <property name="y">35</property>
                               </packing>
                             </child>
                             <child>
@@ -1140,20 +1189,20 @@
                                 <property name="label" translatable="yes">Cantidad:</property>
                               </object>
                               <packing>
-                                <property name="x">4</property>
-                                <property name="y">170</property>
+                                <property name="x">13</property>
+                                <property name="y">220</property>
                               </packing>
                             </child>
                             <child>
                               <object class="GtkEntry" id="entproducto">
                                 <property name="width_request">166</property>
-                                <property name="height_request">30</property>
+                                <property name="height_request">29</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
                               <packing>
                                 <property name="x">121</property>
-                                <property name="y">169</property>
+                                <property name="y">219</property>
                               </packing>
                             </child>
                             <child>
@@ -1169,6 +1218,46 @@
                               <packing>
                                 <property name="x">57</property>
                                 <property name="y">589</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="btnañadircomanda">
+                                <property name="label" translatable="yes">Añadir comanda </property>
+                                <property name="width_request">127</property>
+                                <property name="height_request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_btnañadircomanda_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="x">61</property>
+                                <property name="y">309</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width_request">100</property>
+                                <property name="height_request">29</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Nº Factura</property>
+                              </object>
+                              <packing>
+                                <property name="x">13</property>
+                                <property name="y">144</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="lblfactura">
+                                <property name="width_request">100</property>
+                                <property name="height_request">30</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="x">132</property>
+                                <property name="y">143</property>
                               </packing>
                             </child>
                           </object>
@@ -1255,6 +1344,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="model">listmesas2</property>
+                                    <signal name="cursor-changed" handler="on_treemesas2_cursor_changed" swapped="no"/>
                                     <child internal-child="selection">
                                       <object class="GtkTreeSelection"/>
                                     </child>
@@ -1291,6 +1381,91 @@
                                 <property name="position">1</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="treefacturas">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">listfacturas</property>
+                                    <signal name="cursor-changed" handler="on_treefacturas_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection"/>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Factura</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="idfactura"/>
+                                          <attributes>
+                                            <attribute name="text">0</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Camarero</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="idcamarero"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Mesa</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="idmesa2"/>
+                                          <attributes>
+                                            <attribute name="text">2</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Fecha</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="fecha"/>
+                                          <attributes>
+                                            <attribute name="text">3</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Pagada</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="pagada"/>
+                                          <attributes>
+                                            <attribute name="text">4</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1315,10 +1490,304 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Proximamente</property>
+                        <child>
+                          <object class="GtkFixed">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width_request">100</property>
+                                <property name="height_request">30</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Factura elegida:</property>
+                              </object>
+                              <packing>
+                                <property name="x">11</property>
+                                <property name="y">68</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="lblfactura2">
+                                <property name="width_request">100</property>
+                                <property name="height_request">30</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                                <property name="y">68</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width_request">104</property>
+                                <property name="height_request">30</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Cliente elegido:</property>
+                              </object>
+                              <packing>
+                                <property name="x">14</property>
+                                <property name="y">142</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="lblcliente">
+                                <property name="width_request">100</property>
+                                <property name="height_request">30</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                                <property name="y">144</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="btnpagosinfactura">
+                                <property name="label" translatable="yes">Realizar pago sin factura</property>
+                                <property name="width_request">190</property>
+                                <property name="height_request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_btnpagosinfactura_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="x">26</property>
+                                <property name="y">562</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="btngenerarfactura">
+                                <property name="label" translatable="yes">Generar factura</property>
+                                <property name="width_request">120</property>
+                                <property name="height_request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">57</property>
+                                <property name="y">214</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="treefacturas2">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="model">listfacturas2</property>
+                                    <signal name="cursor-changed" handler="on_treefacturas2_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection"/>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Factura</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">0</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">DNI Cliente</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Camarero</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">2</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Id Mesa</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">3</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Fecha</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">4</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Pagada</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">5</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="treeclientes2">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="model">listclientes2</property>
+                                    <signal name="cursor-changed" handler="on_treeclientes2_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection"/>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">DNI</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">0</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Apellidos</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Nombre</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">2</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Dirección</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">3</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Provincia</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">4</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn">
+                                        <property name="title" translatable="yes">Localidad</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">5</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">3</property>
@@ -1328,7 +1797,7 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Facturas/Tickets</property>
+                        <property name="label" translatable="yes">Gestión facturas</property>
                       </object>
                       <packing>
                         <property name="position">3</property>
@@ -1453,6 +1922,60 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMessageDialog" id="venerrorgenerica">
+    <property name="width_request">400</property>
+    <property name="height_request">200</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Error</property>
+    <property name="modal">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">venprincipal</property>
+    <property name="message_type">warning</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="btnaceptargenerica">
+                <property name="label" translatable="yes">Aceptar</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btnaceptargenerica_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="lblerrorgenerica">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
