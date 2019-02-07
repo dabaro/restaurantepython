@@ -1,6 +1,7 @@
 import gi
 import datos
 import datosprovincias
+import factura
 #import locale
 import datetime
 
@@ -46,6 +47,11 @@ class Restaurante:
         self.mesa7 = b.get_object("mesa7")
         self.mesa8 = b.get_object("mesa8")
         self.lbllogin = b.get_object("lbllogin")
+        self.menuabout = b.get_object("menuabout")
+
+        #Objetos pestaña about
+        self.venabout = b.get_object("venabout")
+        self.btnvolverabout = b.get_object("btnvolverabout")
 
 
         #Objetos pestaña mesas
@@ -181,7 +187,10 @@ class Restaurante:
                'on_btnaceptargenerica_clicked': self.hidevenerrorgenerica,
                'on_treeclientes2_cursor_changed': self.recuperarcliente2,
                'on_treefacturas2_cursor_changed': self.recuperarfactura,
-               'on_btnpagosinfactura_clicked': self.pagarsinfactura
+               'on_btnpagosinfactura_clicked': self.pagarsinfactura,
+               'on_btngenerarfactura_clicked': self.pagarconfactura,
+               'on_menuabout_activate': self.showvenabout,
+               'on_btnvolverabout_clicked': self.hidevenabout
                }
 
         b.connect_signals(dic)
@@ -212,6 +221,12 @@ class Restaurante:
 
     def showvenlogin(self, widget, data=None):
         self.venlogin.show()
+
+    def showvenabout(self, widget, data=None):
+        self.venabout.show()
+
+    def hidevenabout(self, widget, data=None):
+        self.venabout.hide()
 
     def hidevenlogin(self, widget, data=None):
         self.venlogin.hide()
@@ -515,6 +530,8 @@ class Restaurante:
             self.limpiarClientes(widget)
         if panel == 2:
             self.limpiarproductos(widget)
+        if panel == 3:
+            self.limpiarfacturas(widget)
 
 
     def limpiarClientes(self, widget, data=None):
@@ -535,6 +552,9 @@ class Restaurante:
         self.lblproducto.set_text('')
         self.entproducto.set_text('')
 
+    def limpiarfacturas(self, widget, data=None):
+        self.lblfactura2.set_text('')
+        self.lblcliente.set_text('')
 
 
     def recuperarcliente(self, widget, data=None):
@@ -699,7 +719,6 @@ class Restaurante:
 
         if camarero != '':
             if idfactura != '':
-                idfactura = self.lblfactura2.get_text()
                 pagada = 'Si'
                 datos.pagarfactura(idfactura, pagada)
                 datos.cargarfacturas(self.listfacturas2, self.treefacturas2)
@@ -742,9 +761,58 @@ class Restaurante:
             self.lblerrorgenerica.set_text("No hay ningún camarero logueado")
 
 
+    def pagarconfactura(self, widget, data=None):
+        camarero = self.lblcamarero.get_text()
+        idfactura = self.lblfactura2.get_text()
+        dnicliente = self.lblcliente.get_text()
 
+        if camarero != '':
+            if idfactura != '':
+                if dnicliente != '':
+                    datos.asignarclientefactura(dnicliente, idfactura)
+                    factura.crearfactura(idfactura, dnicliente)
+                    pagada = 'Si'
+                    datos.pagarfactura(idfactura, pagada)
+                    datos.cargarfacturas(self.listfacturas2, self.treefacturas2)
+                    idmesa = datos.buscarmesafactura(idfactura)
+                    datos.cambiarestadomesavaciar(idmesa)
+                    self.lblfactura2.set_text('')
+                    datos.cargarMesas(self.listmesas, self.treemesas)
+                    datos.cargarMesas2(self.listmesas2, self.treemesas2)
 
-
+                    if idmesa == 1:
+                        self.mesa1.set_from_file("../imagenes/mesa4libre.png")
+                        self.btnmesa1.set_sensitive(True)
+                    if idmesa == 2:
+                        self.mesa2.set_from_file("../imagenes/mesa4libre.png")
+                        self.btnmesa2.set_sensitive(True)
+                    if idmesa == 3:
+                        self.mesa3.set_from_file("../imagenes/mesa4libre.png")
+                        self.btnmesa3.set_sensitive(True)
+                    if idmesa == 4:
+                        self.mesa4.set_from_file("../imagenes/mesa4libre.png")
+                        self.btnmesa4.set_sensitive(True)
+                    if idmesa == 5:
+                        self.mesa5.set_from_file("../imagenes/mesa8libre.png")
+                        self.btnmesa5.set_sensitive(True)
+                    if idmesa == 6:
+                        self.mesa6.set_from_file("../imagenes/mesa8libre.png")
+                        self.btnmesa6.set_sensitive(True)
+                    if idmesa == 7:
+                        self.mesa7.set_from_file("../imagenes/mesa10libre.png")
+                        self.btnmesa7.set_sensitive(True)
+                    if idmesa == 8:
+                        self.mesa8.set_from_file("../imagenes/mesa10libre.png")
+                        self.btnmesa8.set_sensitive(True)
+                else:
+                    self.venerrorgenerica.show()
+                    self.lblerrorgenerica.set_text("No ha seleccionado un cliente")
+            else:
+                self.venerrorgenerica.show()
+                self.lblerrorgenerica.set_text("No ha seleccionado una factura")
+        else:
+            self.venerrorgenerica.show()
+            self.lblerrorgenerica.set_text("No hay ningún camarero logueado")
 
 
 

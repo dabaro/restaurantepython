@@ -290,3 +290,26 @@ def buscarmesafactura(idfactura):
     except sqlite3.OperationalError as e:
         print(e)
 
+
+def listadolineafactura(idfactura):
+    try:
+        print(idfactura)
+        cur.execute("select l.Idventa, p.Nombreproducto, l.Cantidad, p.Preciounidad from Lineafactura l, Producto p "
+                    "where l.Idfactura = ? and p.Idproducto = l.Idproducto", (idfactura,))
+        cursor=cur.fetchall()
+        print(cursor)
+
+        return cursor
+
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def asignarclientefactura(dnicliente,idfactura):
+    try:
+        cur.execute("Update Factura set Dnicliente=? where Idfactura=? ", (dnicliente, idfactura))
+        conex.commit()
+
+    except sqlite3.OperationalError as e:
+        print(e)
+        conex.rollback()
+
